@@ -17,9 +17,10 @@ namespace JackLib
         {
             if (database == null) throw new ArgumentNullException(nameof(database));
 
+            var conn = database.GetDbConnection();
             return RetryUtil.Retry(async () =>
             {
-                var conn = database.GetDbConnection();
+                if (conn.State != ConnectionState.Open) conn.Open();
                 return await conn.QueryAsync<T>(sql, param);
 
             }, errorDoAgain);
@@ -29,9 +30,10 @@ namespace JackLib
         {
             if (database == null) throw new ArgumentNullException(nameof(database));
 
+            var conn = database.GetDbConnection();
             return RetryUtil.Retry(async () =>
             {
-                var conn = database.GetDbConnection();
+                if (conn.State != ConnectionState.Open) conn.Open();
                 return await conn.ExecuteScalarAsync(sql, param);
             }, errorDoAgain);
         }
@@ -48,9 +50,10 @@ namespace JackLib
         {
             if (database == null) throw new ArgumentNullException(nameof(database));
 
+            var conn = database.GetDbConnection();
             return RetryUtil.Retry(async () =>
             {
-                var conn = database.GetDbConnection();
+                if (conn.State != ConnectionState.Open) conn.Open();
                 using (var trans = conn.BeginTransaction(IsolationLevel.Serializable))
                 {
                     var result = await conn.ExecuteAsync(sql, param, trans);
@@ -73,10 +76,11 @@ namespace JackLib
         {
             if (database == null) throw new ArgumentNullException(nameof(database));
 
+            var conn = database.GetDbConnection();
 
             return RetryUtil.Retry(async () =>
             {
-                var conn = database.GetDbConnection();
+                if (conn.State != ConnectionState.Open) conn.Open();
                 using (var trans = conn.BeginTransaction(IsolationLevel.Serializable))
                 {
                     foreach (var qp in queryParas)
