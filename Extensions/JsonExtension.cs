@@ -10,7 +10,11 @@ namespace JackLib
     {
         public static T Parse<T>(this string json)
         {
-            return System.Text.Json.JsonSerializer.Deserialize<T>(json);
+            var result = System.Text.Json.JsonSerializer.Deserialize<T>(json, new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return result; 
         }
     }
 }

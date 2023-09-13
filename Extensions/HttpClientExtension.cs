@@ -10,7 +10,7 @@ namespace JackLib
 {
     public static class HttpClientExtension
     {
-        public static async Task<T> GetAnsyc<T>(this HttpClient httpClient, string url, Dictionary<string, string> param)
+        public static async Task<T> GetByParamAnsyc<T>(this HttpClient httpClient, string url, Dictionary<string, string> param)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace JackLib
                 {
                     string jsonResponse = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(jsonResponse);
-                    return jsonResponse.Parse<T>();
+                    return jsonResponse.Parse<T>(); 
                 }
                 else
                 {

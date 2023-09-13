@@ -14,5 +14,24 @@ namespace JackLib
         {
             return source.ToString(format, CultureInfo.InvariantCulture);
         }
+
+        /// <summary>
+        /// convert民國to西元
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        /// <exception cref="FormatException"></exception>
+        public static DateTime RocToAd(this string source)
+        {
+            CultureInfo culture = new CultureInfo("zh-TW");
+            culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+            if (DateTime.TryParseExact(source, "yyyy/MM/dd", culture, DateTimeStyles.None, out DateTime dateTime))
+            {
+                return dateTime;
+            }
+
+            throw new FormatException($"Convert {source} to AD error!!");
+        }
     }
 }
